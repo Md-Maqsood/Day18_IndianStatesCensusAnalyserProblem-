@@ -100,4 +100,16 @@ public class StateCensusAnalyserTest {
 			Assert.assertEquals(CensusAnalyserExceptionType.CENSUS_FILE_PROBLEM, e.exceptionType);
 		}
 	}
+	
+	@Test
+	public void givenWrongTypeStateCodeCsvFileShouldThrowCensusAnalyserExceptionOfTypeIncorrectType() {
+		try {
+			StateCensusAnalyser<CSVStates> stateCensusAnalyser=new StateCensusAnalyser<>();
+			ExpectedException exceptionRule= ExpectedException.none();
+			exceptionRule.expect(CensusAnalyserException.class);
+			stateCensusAnalyser.loadStateCensusData(WRONGTYPE_STATE_CODES_CSV,CSVStates.class);
+		}catch(CensusAnalyserException e) {
+			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_TYPE, e.exceptionType);
+		}
+	}
 }
