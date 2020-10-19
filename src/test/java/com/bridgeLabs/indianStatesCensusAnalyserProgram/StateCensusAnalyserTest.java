@@ -9,6 +9,7 @@ public class StateCensusAnalyserTest {
 	public static final String WRONG_CENSUS_CSV = "src/main/resources/India-Census-Date.csv";
 	public static final String WRONGTYPE_CENSUS_CSV = "src/main/resources/India-Census-Data-WrongType.csv";
 	public static final String WRONGDELIMITER_CENSUS_CSV = "src/main/resources/India-Census-Data-WrongDelimiter.csv";
+	public static final String WRONGHEADER_CENSUS_CSV = "src/main/resources/India-Census-Data-WrongHeader.csv";
 
 	@Test
 	public void givenIndiaCensusDataCsvShouldReturnExactCount() {
@@ -55,6 +56,18 @@ public class StateCensusAnalyserTest {
 			stateCensusAnalyser.loadStateCensusData(WRONGDELIMITER_CENSUS_CSV);
 		}catch(CensusAnalyserException e) {
 			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_DELIMITER, e.exceptionType);
+		}
+	}
+	
+	@Test
+	public void givenCsvFileIncorrectHeaderShouldThrowCensusAnalyserExceptionOfTypeIncorrectHeader() {
+		try {
+			StateCensusAnalyser stateCensusAnalyser=new StateCensusAnalyser();
+			ExpectedException exceptionRule= ExpectedException.none();
+			exceptionRule.expect(CensusAnalyserException.class);
+			stateCensusAnalyser.loadStateCensusData(WRONGHEADER_CENSUS_CSV);
+		}catch(CensusAnalyserException e) {
+			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_HEADER, e.exceptionType);
 		}
 	}
 
