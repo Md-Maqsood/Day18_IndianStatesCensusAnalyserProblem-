@@ -112,4 +112,16 @@ public class StateCensusAnalyserTest {
 			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_TYPE, e.exceptionType);
 		}
 	}
+	
+	@Test
+	public void givenStateCodesCsvFileIncorrectDelimiterShouldThrowCensusAnalyserExceptionOfTypeIncorrectDelimiter() {
+		try {
+			StateCensusAnalyser<CSVStates> stateCensusAnalyser=new StateCensusAnalyser<>();
+			ExpectedException exceptionRule= ExpectedException.none();
+			exceptionRule.expect(CensusAnalyserException.class);
+			stateCensusAnalyser.loadStateCensusData(WRONGDELIMITER_STATE_CODES_CSV,CSVStates.class);
+		}catch(CensusAnalyserException e) {
+			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_DELIMITER, e.exceptionType);
+		}
+	}
 }

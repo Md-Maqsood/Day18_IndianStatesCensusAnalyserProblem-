@@ -38,8 +38,9 @@ public class StateCensusAnalyser<T> {
 						CensusAnalyserExceptionType.INCORRECT_DELIMITER);
 				}
 			} else {
+				System.out.println(e.getMessage());
 				e.printStackTrace();
-				throw new RuntimeException();
+				throw e;
 			}
 		}
 	}
