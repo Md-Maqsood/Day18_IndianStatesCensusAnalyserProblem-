@@ -89,5 +89,15 @@ public class StateCensusAnalyserTest {
 
 	}
 	
-
+	@Test
+	public void givenWrongStateCodeCsvFileShouldThrowCensusAnalyserExceptionOfTypeCensusFileProblem() {
+		try {
+			StateCensusAnalyser<CSVStates> stateCensusAnalyser=new StateCensusAnalyser<>();
+			ExpectedException exceptionRule= ExpectedException.none();
+			exceptionRule.expect(CensusAnalyserException.class);
+			stateCensusAnalyser.loadStateCensusData(WRONG_STATE_CODES_CSV,CSVStates.class);
+		}catch(CensusAnalyserException e) {
+			Assert.assertEquals(CensusAnalyserExceptionType.CENSUS_FILE_PROBLEM, e.exceptionType);
+		}
+	}
 }
