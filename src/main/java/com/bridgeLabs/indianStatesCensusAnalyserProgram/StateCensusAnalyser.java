@@ -7,8 +7,12 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 public class StateCensusAnalyser {
 	public int loadStateCensusData(String csvFilePath) throws CensusAnalyserException {
@@ -16,13 +20,23 @@ public class StateCensusAnalyser {
 			CsvToBeanBuilder<CSVStateCensus> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
 			csvToBeanBuilder.withType(CSVStateCensus.class);
 			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
-			CsvToBean<CSVStateCensus> csvToBean=csvToBeanBuilder.build();
+			CsvToBean<CSVStateCensus> csvToBean = csvToBeanBuilder.build();
 			Iterator<CSVStateCensus> censusCsvIterator = csvToBean.iterator();
 			Iterable<CSVStateCensus> csvIterable = () -> censusCsvIterator;
-			int numOfEntries=(int) StreamSupport.stream(csvIterable.spliterator(), false).count();
+			int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
 			return numOfEntries;
-		}catch(IOException e) {
+		} catch (IOException e) {
 			throw new CensusAnalyserException("Incorrect CSV File", CensusAnalyserExceptionType.CENSUS_FILE_PROBLEM);
+		} catch (RuntimeException e) {
+			if (ExceptionUtils.indexOfType(e, CsvDataTypeMismatchException.class) != -1) {
+				throw new CensusAnalyserException("Incorrect Type", CensusAnalyserExceptionType.INCORRECT_TYPE);
+			} else if (ExceptionUtils.indexOfType(e, CsvRequiredFieldEmptyException.class) != -1) {
+				throw new CensusAnalyserException("Incorrect Delimiter",
+						CensusAnalyserExceptionType.INCORRECT_DELIMITER);
+			} else {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
 		}
 	}
 }

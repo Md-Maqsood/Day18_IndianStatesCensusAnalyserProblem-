@@ -9,5 +9,5 @@ public class CensusAnalyserException extends Exception{
 }
 
 enum CensusAnalyserExceptionType{
-	CENSUS_FILE_PROBLEM
+	CENSUS_FILE_PROBLEM, INCORRECT_TYPE, INCORRECT_DELIMITER
 }
