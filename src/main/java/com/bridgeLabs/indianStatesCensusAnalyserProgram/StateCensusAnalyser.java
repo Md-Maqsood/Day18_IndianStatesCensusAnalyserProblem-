@@ -14,15 +14,15 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-public class StateCensusAnalyser {
-	public int loadStateCensusData(String csvFilePath) throws CensusAnalyserException {
+public class StateCensusAnalyser<T> {
+	public int loadStateCensusData(String csvFilePath, Class csvBindedClass) throws CensusAnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
-			CsvToBeanBuilder<CSVStateCensus> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
-			csvToBeanBuilder.withType(CSVStateCensus.class);
+			CsvToBeanBuilder<T> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
+			csvToBeanBuilder.withType(csvBindedClass);
 			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
-			CsvToBean<CSVStateCensus> csvToBean = csvToBeanBuilder.build();
-			Iterator<CSVStateCensus> censusCsvIterator = csvToBean.iterator();
-			Iterable<CSVStateCensus> csvIterable = () -> censusCsvIterator;
+			CsvToBean<T> csvToBean = csvToBeanBuilder.build();
+			Iterator<T> censusCsvIterator = csvToBean.iterator();
+			Iterable<T> csvIterable = () -> censusCsvIterator;
 			int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
 			return numOfEntries;
 		} catch (IOException e) {
