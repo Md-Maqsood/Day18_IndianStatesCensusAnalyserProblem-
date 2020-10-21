@@ -1,5 +1,7 @@
 package com.bridgeLabs.indianStatesCensusAnalyserProgram;
 
+import java.util.List;
+
 import com.opencsv.bean.CsvBindByName;
 
 public class CSVStates {
@@ -21,4 +23,13 @@ public class CSVStates {
 		return "CSVStates [stateName=" + stateName + ", stateCode=" + stateCode + "]";
 	}
 
+	public CSVStates() {
+	}
+
+	public CSVStates(List<String> values) {
+		this.id = Integer.parseInt(values.get(0));
+		this.stateName = values.get(1);
+		this.tin = Integer.parseInt(values.get(2));
+		this.stateCode = values.get(3);
+	}
 }

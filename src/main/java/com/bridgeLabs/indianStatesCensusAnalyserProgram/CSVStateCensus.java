@@ -1,5 +1,7 @@
 package com.bridgeLabs.indianStatesCensusAnalyserProgram;
 
+import java.util.List;
+
 import com.opencsv.bean.CsvBindByName;
 
 public class CSVStateCensus {
@@ -17,6 +19,19 @@ public class CSVStateCensus {
 	public long female;
 	@CsvBindByName(column = "literate", required = true)
 	public long literate;
+
+	public CSVStateCensus() {
+	}
+
+	public CSVStateCensus(List<String> values) {
+		this.districtCode = Integer.parseInt(values.get(0));
+		this.stateName = values.get(1);
+		this.districtName = values.get(2);
+		this.population = Long.parseLong(values.get(3));
+		this.male = Long.parseLong(values.get(4));
+		this.female = Long.parseLong(values.get(5));
+		this.literate = Long.parseLong(values.get(6));
+	}
 
 	@Override
 	public String toString() {

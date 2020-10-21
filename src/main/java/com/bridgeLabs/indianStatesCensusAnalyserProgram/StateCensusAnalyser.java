@@ -13,9 +13,9 @@ import com.bridgeLabs.csvHandler.ICsvBuilder;
 import com.bridgeLabs.csvHandler.CsvExceptionType;
 
 public class StateCensusAnalyser {
-	public int loadStateCensusData(String csvFilePath) throws CsvException {
+	public int loadStateCensusData(String csvFilePath,CsvBuilderType csvBuilderType) throws CsvException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
-			ICsvBuilder csvBuilder = CsvBuilderFactory.createBuilder();
+			ICsvBuilder csvBuilder = csvBuilderType==CsvBuilderType.OPEN_CSV?CsvBuilderFactory.createBuilderOpen():CsvBuilderFactory.createBuilderCommons();
 			Iterator<CSVStateCensus> censusCsvIterator = csvBuilder.getIteratorFromCsv(reader, CSVStateCensus.class);
 			return getCountFromIterator(censusCsvIterator);
 		} catch (IOException e) {
@@ -23,9 +23,9 @@ public class StateCensusAnalyser {
 		}
 	}
 
-	public int loadStateCodesData(String csvFilePath) throws CsvException {
+	public int loadStateCodesData(String csvFilePath,CsvBuilderType csvBuilderType) throws CsvException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
-			ICsvBuilder csvBuilder = CsvBuilderFactory.createBuilder();
+			ICsvBuilder csvBuilder = csvBuilderType==CsvBuilderType.OPEN_CSV?CsvBuilderFactory.createBuilderOpen():CsvBuilderFactory.createBuilderCommons();
 			Iterator<CSVStates> codesCsvIterator = csvBuilder.getIteratorFromCsv(reader, CSVStates.class);
 			return getCountFromIterator(codesCsvIterator);
 		} catch (IOException e) {
