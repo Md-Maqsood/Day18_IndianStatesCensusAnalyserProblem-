@@ -15,7 +15,7 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 public class StateCensusAnalyser<T> {
-	public int loadStateCensusData(String csvFilePath, Class csvBindedClass) throws CensusAnalyserException {
+	public int loadStateCensusData(String csvFilePath, Class<T> csvBindedClass) throws CensusAnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
 			CsvToBeanBuilder<T> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
 			csvToBeanBuilder.withType(csvBindedClass);
