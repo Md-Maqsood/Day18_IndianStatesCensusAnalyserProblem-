@@ -41,6 +41,11 @@
 			<artifactId>opencsv</artifactId>
 			<version>4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.BridgeLabs</groupId>
+			<artifactId>CsvHandler</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
