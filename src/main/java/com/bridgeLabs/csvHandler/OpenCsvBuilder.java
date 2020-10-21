@@ -1,4 +1,4 @@
-package com.bridgeLabs.indianStatesCensusAnalyserProgram;
+package com.bridgeLabs.csvHandler;
 
 import java.io.Reader;
 import java.util.Iterator;
@@ -11,7 +11,7 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 public class OpenCsvBuilder implements ICsvBuilder {
-	public <T> Iterator<T> getIteratorFromCsv(Reader reader, Class<T> csvBindedClass) throws CensusAnalyserException {
+	public <T> Iterator<T> getIteratorFromCsv(Reader reader, Class<T> csvBindedClass) throws CsvException {
 		try {
 			CsvToBeanBuilder<T> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
 			csvToBeanBuilder.withType(csvBindedClass);
@@ -21,13 +21,12 @@ public class OpenCsvBuilder implements ICsvBuilder {
 			return censusCsvIterator;
 		} catch (RuntimeException e) {
 			if (ExceptionUtils.indexOfType(e, CsvDataTypeMismatchException.class) != -1) {
-				throw new CensusAnalyserException("Incorrect Type", CensusAnalyserExceptionType.INCORRECT_TYPE);
+				throw new CsvException("Incorrect Type", CsvExceptionType.INCORRECT_TYPE);
 			} else if (ExceptionUtils.indexOfType(e, CsvRequiredFieldEmptyException.class) != -1) {
 				if (e.getMessage().equals("Error capturing CSV header!")) {
-					throw new CensusAnalyserException("Incorrect Header", CensusAnalyserExceptionType.INCORRECT_HEADER);
+					throw new CsvException("Incorrect Header", CsvExceptionType.INCORRECT_HEADER);
 				} else {
-					throw new CensusAnalyserException("Incorrect Delimiter",
-							CensusAnalyserExceptionType.INCORRECT_DELIMITER);
+					throw new CsvException("Incorrect Delimiter", CsvExceptionType.INCORRECT_DELIMITER);
 				}
 			} else {
 				System.out.println(e.getMessage());
