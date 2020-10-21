@@ -18,9 +18,7 @@ public class StateCensusAnalyser {
 	public int loadStateCensusData(String csvFilePath) throws CensusAnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
 			Iterator<CSVStateCensus> censusCsvIterator = getIteratorFromCsv(reader, CSVStateCensus.class);
-			Iterable<CSVStateCensus> csvIterable = () -> censusCsvIterator;
-			int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
-			return numOfEntries;
+			return getCountFromIterator(censusCsvIterator);
 		} catch (IOException e) {
 			throw new CensusAnalyserException("Incorrect CSV File", CensusAnalyserExceptionType.CENSUS_FILE_PROBLEM);
 		}
@@ -28,13 +26,17 @@ public class StateCensusAnalyser {
 
 	public int loadStateCodesData(String csvFilePath) throws CensusAnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
-			Iterator<CSVStates> censusCsvIterator = getIteratorFromCsv(reader, CSVStates.class);
-			Iterable<CSVStates> csvIterable = () -> censusCsvIterator;
-			int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
-			return numOfEntries;
+			Iterator<CSVStates> codesCsvIterator = getIteratorFromCsv(reader, CSVStates.class);
+			return getCountFromIterator(codesCsvIterator);
 		} catch (IOException e) {
 			throw new CensusAnalyserException("Incorrect CSV File", CensusAnalyserExceptionType.CENSUS_FILE_PROBLEM);
 		}
+	}
+
+	public <T> int getCountFromIterator(Iterator<T> csvIterator) {
+		Iterable<T> csvIterable = () -> csvIterator;
+		int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
+		return numOfEntries;
 	}
 
 	public <T> Iterator<T> getIteratorFromCsv(Reader reader, Class<T> csvBindedClass) throws CensusAnalyserException {
