@@ -18,9 +18,9 @@ public class StateCensusAnalyserTest {
 
 	@Test
 	public void givenIndiaCensusDataCsvShouldReturnExactCount() {
-		StateCensusAnalyser<CSVStateCensus> stateCensusAnalyser = new StateCensusAnalyser<>();
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
-			int recordsCount = stateCensusAnalyser.loadStateCensusData(RIGHT_CENSUS_CSV, CSVStateCensus.class);
+			int recordsCount = stateCensusAnalyser.loadStateCensusData(RIGHT_CENSUS_CSV);
 			Assert.assertEquals(640, recordsCount);
 		} catch (CensusAnalyserException e) {
 			e.printStackTrace();
@@ -31,10 +31,10 @@ public class StateCensusAnalyserTest {
 	@Test
 	public void givenWrongIndiaCensusCsvFileShouldThrowCensusAnalyserExceptionOfTypeCensusFileProblem() {
 		try {
-			StateCensusAnalyser<CSVStateCensus> stateCensusAnalyser = new StateCensusAnalyser<>();
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CensusAnalyserException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONG_CENSUS_CSV, CSVStateCensus.class);
+			stateCensusAnalyser.loadStateCensusData(WRONG_CENSUS_CSV);
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(CensusAnalyserExceptionType.CENSUS_FILE_PROBLEM, e.exceptionType);
 		}
@@ -43,10 +43,10 @@ public class StateCensusAnalyserTest {
 	@Test
 	public void givenWrongTypeIndiaCensusCsvFileShouldThrowCensusAnalyserExceptionOfTypeIncorrectType() {
 		try {
-			StateCensusAnalyser<CSVStateCensus> stateCensusAnalyser = new StateCensusAnalyser<>();
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CensusAnalyserException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONGTYPE_CENSUS_CSV, CSVStateCensus.class);
+			stateCensusAnalyser.loadStateCensusData(WRONGTYPE_CENSUS_CSV);
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_TYPE, e.exceptionType);
 		}
@@ -55,10 +55,10 @@ public class StateCensusAnalyserTest {
 	@Test
 	public void givenIndiaCensusCsvFileIncorrectDelimiterShouldThrowCensusAnalyserExceptionOfTypeIncorrectDelimiter() {
 		try {
-			StateCensusAnalyser<CSVStateCensus> stateCensusAnalyser = new StateCensusAnalyser<>();
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CensusAnalyserException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONGDELIMITER_CENSUS_CSV, CSVStateCensus.class);
+			stateCensusAnalyser.loadStateCensusData(WRONGDELIMITER_CENSUS_CSV);
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_DELIMITER, e.exceptionType);
 		}
@@ -67,10 +67,10 @@ public class StateCensusAnalyserTest {
 	@Test
 	public void givenIndiaCensusCsvFileIncorrectHeaderShouldThrowCensusAnalyserExceptionOfTypeIncorrectHeader() {
 		try {
-			StateCensusAnalyser<CSVStateCensus> stateCensusAnalyser = new StateCensusAnalyser<>();
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CensusAnalyserException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONGHEADER_CENSUS_CSV, CSVStateCensus.class);
+			stateCensusAnalyser.loadStateCensusData(WRONGHEADER_CENSUS_CSV);
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_HEADER, e.exceptionType);
 		}
@@ -78,9 +78,9 @@ public class StateCensusAnalyserTest {
 
 	@Test
 	public void givenIndiaStateCodesCsvShouldReturnExactCount() {
-		StateCensusAnalyser<CSVStates> stateCensusAnalyser = new StateCensusAnalyser<>();
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
-			int recordsCount = stateCensusAnalyser.loadStateCensusData(RIGHT_STATE_CODES_CSV, CSVStates.class);
+			int recordsCount = stateCensusAnalyser.loadStateCodesData(RIGHT_STATE_CODES_CSV);
 			Assert.assertEquals(32, recordsCount);
 		} catch (CensusAnalyserException e) {
 			e.printStackTrace();
@@ -91,10 +91,10 @@ public class StateCensusAnalyserTest {
 	@Test
 	public void givenWrongStateCodeCsvFileShouldThrowCensusAnalyserExceptionOfTypeCensusFileProblem() {
 		try {
-			StateCensusAnalyser<CSVStates> stateCensusAnalyser = new StateCensusAnalyser<>();
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CensusAnalyserException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONG_STATE_CODES_CSV, CSVStates.class);
+			stateCensusAnalyser.loadStateCodesData(WRONG_STATE_CODES_CSV);
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(CensusAnalyserExceptionType.CENSUS_FILE_PROBLEM, e.exceptionType);
 		}
@@ -103,10 +103,10 @@ public class StateCensusAnalyserTest {
 	@Test
 	public void givenWrongTypeStateCodeCsvFileShouldThrowCensusAnalyserExceptionOfTypeIncorrectType() {
 		try {
-			StateCensusAnalyser<CSVStates> stateCensusAnalyser = new StateCensusAnalyser<>();
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CensusAnalyserException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONGTYPE_STATE_CODES_CSV, CSVStates.class);
+			stateCensusAnalyser.loadStateCodesData(WRONGTYPE_STATE_CODES_CSV);
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_TYPE, e.exceptionType);
 		}
@@ -115,10 +115,10 @@ public class StateCensusAnalyserTest {
 	@Test
 	public void givenStateCodesCsvFileIncorrectDelimiterShouldThrowCensusAnalyserExceptionOfTypeIncorrectDelimiter() {
 		try {
-			StateCensusAnalyser<CSVStates> stateCensusAnalyser = new StateCensusAnalyser<>();
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CensusAnalyserException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONGDELIMITER_STATE_CODES_CSV, CSVStates.class);
+			stateCensusAnalyser.loadStateCodesData(WRONGDELIMITER_STATE_CODES_CSV);
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_DELIMITER, e.exceptionType);
 		}
@@ -127,10 +127,10 @@ public class StateCensusAnalyserTest {
 	@Test
 	public void givenStateCodesCsvFileIncorrectHeaderShouldThrowCensusAnalyserExceptionOfTypeIncorrectHeader() {
 		try {
-			StateCensusAnalyser<CSVStates> stateCensusAnalyser = new StateCensusAnalyser<>();
+			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CensusAnalyserException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONGHEADER_STATE_CODES_CSV, CSVStates.class);
+			stateCensusAnalyser.loadStateCodesData(WRONGHEADER_STATE_CODES_CSV);
 		} catch (CensusAnalyserException e) {
 			Assert.assertEquals(CensusAnalyserExceptionType.INCORRECT_HEADER, e.exceptionType);
 		}
