@@ -5,6 +5,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 import com.bridgeLabs.csvHandler.CsvBuilderFactory;
@@ -13,21 +14,23 @@ import com.bridgeLabs.csvHandler.ICsvBuilder;
 import com.bridgeLabs.csvHandler.CsvExceptionType;
 
 public class StateCensusAnalyser {
-	public int loadStateCensusData(String csvFilePath,CsvBuilderType csvBuilderType) throws CsvException {
+	public int loadStateCensusData(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
-			ICsvBuilder csvBuilder = csvBuilderType==CsvBuilderType.OPEN_CSV?CsvBuilderFactory.createBuilderOpen():CsvBuilderFactory.createBuilderCommons();
-			Iterator<CSVStateCensus> censusCsvIterator = csvBuilder.getIteratorFromCsv(reader, CSVStateCensus.class);
-			return getCountFromIterator(censusCsvIterator);
+			ICsvBuilder csvBuilder = csvBuilderType == CsvBuilderType.OPEN_CSV ? CsvBuilderFactory.createBuilderOpen()
+					: CsvBuilderFactory.createBuilderCommons();
+			List<CSVStateCensus> censusCsvList = csvBuilder.getListFromCsv(reader, CSVStateCensus.class);
+			return censusCsvList.size();
 		} catch (IOException e) {
 			throw new CsvException("Incorrect CSV File", CsvExceptionType.CENSUS_FILE_PROBLEM);
 		}
 	}
 
-	public int loadStateCodesData(String csvFilePath,CsvBuilderType csvBuilderType) throws CsvException {
+	public int loadStateCodesData(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
-			ICsvBuilder csvBuilder = csvBuilderType==CsvBuilderType.OPEN_CSV?CsvBuilderFactory.createBuilderOpen():CsvBuilderFactory.createBuilderCommons();
-			Iterator<CSVStates> codesCsvIterator = csvBuilder.getIteratorFromCsv(reader, CSVStates.class);
-			return getCountFromIterator(codesCsvIterator);
+			ICsvBuilder csvBuilder = csvBuilderType == CsvBuilderType.OPEN_CSV ? CsvBuilderFactory.createBuilderOpen()
+					: CsvBuilderFactory.createBuilderCommons();
+			List<CSVStates> codesCsvList = csvBuilder.getListFromCsv(reader, CSVStates.class);
+			return codesCsvList.size();
 		} catch (IOException e) {
 			throw new CsvException("Incorrect CSV File", CsvExceptionType.CENSUS_FILE_PROBLEM);
 		}

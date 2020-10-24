@@ -5,38 +5,31 @@ import java.util.List;
 import com.opencsv.bean.CsvBindByName;
 
 public class CSVStateCensus {
-	@CsvBindByName(column = "districtCode", required = true)
-	public int districtCode;
-	@CsvBindByName(column = "stateName", required = true)
+	@CsvBindByName(column = "Rank", required = true)
+	public int rank;
+	@CsvBindByName(column = "State", required = true)
 	public String stateName;
-	@CsvBindByName(column = "districtName", required = true)
-	public String districtName;
-	@CsvBindByName(column = "population", required = true)
+	@CsvBindByName(column = "Population", required = true)
 	public long population;
-	@CsvBindByName(column = "male", required = true)
-	public long male;
-	@CsvBindByName(column = "female", required = true)
-	public long female;
-	@CsvBindByName(column = "literate", required = true)
-	public long literate;
+	@CsvBindByName(column = "AreaInSqKm", required = true)
+	public int area;
+	@CsvBindByName(column = "DensityPerSqKm", required = true)
+	public int density;
+
+	@Override
+	public String toString() {
+		return "CSVStateCensus [rank=" + rank + ", stateName=" + stateName + ", population=" + population + ", area="
+				+ area + ", density=" + density + "]";
+	}
 
 	public CSVStateCensus() {
 	}
 
 	public CSVStateCensus(List<String> values) {
-		this.districtCode = Integer.parseInt(values.get(0));
+		this.rank = Integer.parseInt(values.get(0));
 		this.stateName = values.get(1);
-		this.districtName = values.get(2);
-		this.population = Long.parseLong(values.get(3));
-		this.male = Long.parseLong(values.get(4));
-		this.female = Long.parseLong(values.get(5));
-		this.literate = Long.parseLong(values.get(6));
-	}
-
-	@Override
-	public String toString() {
-		return "CSVStateCensus [districtCode=" + districtCode + ", stateName=" + stateName + ", districtName="
-				+ districtName + ", population=" + population + ", male=" + male + ", female=" + female + ", literate="
-				+ literate + "]";
+		this.population = Long.parseLong(values.get(2));
+		this.area = Integer.parseInt(values.get(3));
+		this.density = Integer.parseInt(values.get(4));
 	}
 }

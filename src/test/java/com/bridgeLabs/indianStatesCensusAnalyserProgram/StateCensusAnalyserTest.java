@@ -24,7 +24,7 @@ public class StateCensusAnalyserTest {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
 			int recordsCount = stateCensusAnalyser.loadStateCensusData(RIGHT_CENSUS_CSV,CsvBuilderType.OPEN_CSV);
-			Assert.assertEquals(640, recordsCount);
+			Assert.assertEquals(28, recordsCount);
 		} catch (CsvException e) {
 			e.printStackTrace();
 		}
