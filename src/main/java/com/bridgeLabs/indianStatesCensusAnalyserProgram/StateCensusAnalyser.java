@@ -31,7 +31,19 @@ public class StateCensusAnalyser {
 		}
 	}
 
-	public String getSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType,
+	public String getStateWiseSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
+		return getSortedCensusData(csvFilePath, csvBuilderType, SortByParameter.STATE_NAME, SortOrder.ASCENDING);
+	}
+	
+	public String getStateCodeWiseSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
+		return getSortedCensusData(csvFilePath, csvBuilderType, SortByParameter.STATE_CODE, SortOrder.ASCENDING);
+	}
+	
+	public String getCensusDataFromMostPopulousStateToLeast(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
+		return getSortedCensusData(csvFilePath, csvBuilderType, SortByParameter.POPULATION, SortOrder.DESCENDING);
+	}
+	
+	private String getSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType,
 			SortByParameter sortByParameter, SortOrder sortOrder) throws CsvException {
 		try {
 			List<CSVStateCensus> censusCsvList = loadStateCensusData(csvFilePath, csvBuilderType);
