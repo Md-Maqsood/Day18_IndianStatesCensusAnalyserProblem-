@@ -35,7 +35,7 @@ public class StateCensusAnalyser {
 			SortByParameter sortByParameter, SortOrder sortOrder) throws CsvException {
 		try {
 			List<CSVStateCensus> censusCsvList = loadStateCensusData(csvFilePath, csvBuilderType);
-			Function keyForComparison = getKeyForComparison(csvFilePath, csvBuilderType, sortByParameter);
+			Function keyForComparison = getKeyForComparison(csvBuilderType, sortByParameter);
 			Comparator<CSVStateCensus> censusComparator = Comparator.comparing(keyForComparison);
 			this.sort(censusCsvList, censusComparator, sortOrder);
 			String sortedStateCensusJson = new Gson().toJson(censusCsvList);
@@ -45,7 +45,7 @@ public class StateCensusAnalyser {
 		}
 	}
 
-	private Function getKeyForComparison(String csvFilePath, CsvBuilderType csvBuilderType,
+	private Function getKeyForComparison(CsvBuilderType csvBuilderType,
 			SortByParameter sortByParameter) throws CsvException {
 		switch (sortByParameter) {
 		case STATE_NAME: {
@@ -67,6 +67,10 @@ public class StateCensusAnalyser {
 			} catch (NullPointerException e) {
 				throw new CsvException("Incorrect CSV File", CsvExceptionType.CENSUS_FILE_PROBLEM);
 			}
+		}
+		case POPULATION:{
+			Function<CSVStateCensus, Long> keyForComparison = censusState -> censusState.population;
+			return keyForComparison;
 		}
 		}
 		return null;
