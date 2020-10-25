@@ -24,7 +24,8 @@ public class StateCensusAnalyserTest {
 	public void givenIndiaCensusDataCsvShouldReturnExactCount() {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
-			int recordsCount = stateCensusAnalyser.loadStateCensusData(RIGHT_CENSUS_CSV,CsvBuilderType.OPEN_CSV);
+			int recordsCount = stateCensusAnalyser.loadStateCensusData(RIGHT_CENSUS_CSV, CsvBuilderType.OPEN_CSV)
+					.size();
 			Assert.assertEquals(28, recordsCount);
 		} catch (CsvException e) {
 			e.printStackTrace();
@@ -38,7 +39,7 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONG_CENSUS_CSV,CsvBuilderType.OPEN_CSV);
+			stateCensusAnalyser.loadStateCensusData(WRONG_CENSUS_CSV, CsvBuilderType.OPEN_CSV);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.CENSUS_FILE_PROBLEM, e.exceptionType);
 		}
@@ -50,7 +51,7 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONGTYPE_CENSUS_CSV,CsvBuilderType.OPEN_CSV);
+			stateCensusAnalyser.loadStateCensusData(WRONGTYPE_CENSUS_CSV, CsvBuilderType.OPEN_CSV);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_TYPE, e.exceptionType);
 		}
@@ -62,7 +63,7 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONGDELIMITER_CENSUS_CSV,CsvBuilderType.OPEN_CSV);
+			stateCensusAnalyser.loadStateCensusData(WRONGDELIMITER_CENSUS_CSV, CsvBuilderType.OPEN_CSV);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_DELIMITER, e.exceptionType);
 		}
@@ -74,7 +75,7 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.loadStateCensusData(WRONGHEADER_CENSUS_CSV,CsvBuilderType.OPEN_CSV);
+			stateCensusAnalyser.loadStateCensusData(WRONGHEADER_CENSUS_CSV, CsvBuilderType.OPEN_CSV);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_HEADER, e.exceptionType);
 		}
@@ -84,7 +85,8 @@ public class StateCensusAnalyserTest {
 	public void givenIndiaStateCodesCsvShouldReturnExactCount() {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
-			int recordsCount = stateCensusAnalyser.loadStateCodesData(RIGHT_STATE_CODES_CSV,CsvBuilderType.OPEN_CSV);
+			int recordsCount = stateCensusAnalyser.loadStateCodesData(RIGHT_STATE_CODES_CSV, CsvBuilderType.OPEN_CSV)
+					.size();
 			Assert.assertEquals(32, recordsCount);
 		} catch (CsvException e) {
 			e.printStackTrace();
@@ -98,7 +100,7 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.loadStateCodesData(WRONG_STATE_CODES_CSV,CsvBuilderType.OPEN_CSV);
+			stateCensusAnalyser.loadStateCodesData(WRONG_STATE_CODES_CSV, CsvBuilderType.OPEN_CSV);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.CENSUS_FILE_PROBLEM, e.exceptionType);
 		}
@@ -110,7 +112,7 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.loadStateCodesData(WRONGTYPE_STATE_CODES_CSV,CsvBuilderType.OPEN_CSV);
+			stateCensusAnalyser.loadStateCodesData(WRONGTYPE_STATE_CODES_CSV, CsvBuilderType.OPEN_CSV);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_TYPE, e.exceptionType);
 		}
@@ -122,7 +124,7 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.loadStateCodesData(WRONGDELIMITER_STATE_CODES_CSV,CsvBuilderType.OPEN_CSV);
+			stateCensusAnalyser.loadStateCodesData(WRONGDELIMITER_STATE_CODES_CSV, CsvBuilderType.OPEN_CSV);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_DELIMITER, e.exceptionType);
 		}
@@ -134,43 +136,46 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.loadStateCodesData(WRONGHEADER_STATE_CODES_CSV,CsvBuilderType.OPEN_CSV);
+			stateCensusAnalyser.loadStateCodesData(WRONGHEADER_STATE_CODES_CSV, CsvBuilderType.OPEN_CSV);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_HEADER, e.exceptionType);
 		}
 	}
-	
+
 	@Test
 	public void givenIndianCensusDataWhenSortedOnStateShouldReturnSortedResult() {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
-			String sortedStateCensusJson = stateCensusAnalyser.getSortedCensusData(RIGHT_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_NAME,SortOrder.ASCENDING);
-			CSVStateCensus[] censusCsv=new Gson().fromJson(sortedStateCensusJson, CSVStateCensus[].class);
+			String sortedStateCensusJson = stateCensusAnalyser.getSortedCensusData(RIGHT_CENSUS_CSV,
+					CsvBuilderType.OPEN_CSV, SortByParameter.STATE_NAME, SortOrder.ASCENDING);
+			CSVStateCensus[] censusCsv = new Gson().fromJson(sortedStateCensusJson, CSVStateCensus[].class);
 			Assert.assertEquals("Andhra Pradesh", censusCsv[0].stateName);
 		} catch (CsvException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void givenIndianCensusDataWhenSortedOnStateShouldReturnSortedResultWithCorrectLastState() {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
-			String sortedStateCensusJson = stateCensusAnalyser.getSortedCensusData(RIGHT_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_NAME,SortOrder.ASCENDING);
-			CSVStateCensus[] censusCsv=new Gson().fromJson(sortedStateCensusJson, CSVStateCensus[].class);
-			Assert.assertEquals("West Bengal", censusCsv[censusCsv.length-1].stateName);
+			String sortedStateCensusJson = stateCensusAnalyser.getSortedCensusData(RIGHT_CENSUS_CSV,
+					CsvBuilderType.OPEN_CSV, SortByParameter.STATE_NAME, SortOrder.ASCENDING);
+			CSVStateCensus[] censusCsv = new Gson().fromJson(sortedStateCensusJson, CSVStateCensus[].class);
+			Assert.assertEquals("West Bengal", censusCsv[censusCsv.length - 1].stateName);
 		} catch (CsvException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void givenWrongIndiaCensusCsvWhenSortedOnStateFileShouldThrowCensusAnalyserExceptionOfTypeCensusFileProblem() {
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.getSortedCensusData(WRONG_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_NAME,SortOrder.ASCENDING);
+			stateCensusAnalyser.getSortedCensusData(WRONG_CENSUS_CSV, CsvBuilderType.OPEN_CSV,
+					SortByParameter.STATE_NAME, SortOrder.ASCENDING);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.CENSUS_FILE_PROBLEM, e.exceptionType);
 		}
@@ -182,7 +187,8 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.getSortedCensusData(WRONGTYPE_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_NAME,SortOrder.ASCENDING);
+			stateCensusAnalyser.getSortedCensusData(WRONGTYPE_CENSUS_CSV, CsvBuilderType.OPEN_CSV,
+					SortByParameter.STATE_NAME, SortOrder.ASCENDING);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_TYPE, e.exceptionType);
 		}
@@ -194,7 +200,8 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.getSortedCensusData(WRONGDELIMITER_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_NAME,SortOrder.ASCENDING);
+			stateCensusAnalyser.getSortedCensusData(WRONGDELIMITER_CENSUS_CSV, CsvBuilderType.OPEN_CSV,
+					SortByParameter.STATE_NAME, SortOrder.ASCENDING);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_DELIMITER, e.exceptionType);
 		}
@@ -206,43 +213,47 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.getSortedCensusData(WRONGHEADER_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_NAME,SortOrder.ASCENDING);
+			stateCensusAnalyser.getSortedCensusData(WRONGHEADER_CENSUS_CSV, CsvBuilderType.OPEN_CSV,
+					SortByParameter.STATE_NAME, SortOrder.ASCENDING);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_HEADER, e.exceptionType);
 		}
 	}
-	
+
 	@Test
 	public void givenIndianCensusDataWhenSortedOnStateCodeShouldReturnSortedResult() {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
-			String sortedStateCensusJson = stateCensusAnalyser.getSortedCensusData(RIGHT_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_CODE,SortOrder.ASCENDING);
-			CSVStateCensus[] censusCsv=new Gson().fromJson(sortedStateCensusJson, CSVStateCensus[].class);
+			String sortedStateCensusJson = stateCensusAnalyser.getSortedCensusData(RIGHT_CENSUS_CSV,
+					CsvBuilderType.OPEN_CSV, SortByParameter.STATE_CODE, SortOrder.ASCENDING);
+			CSVStateCensus[] censusCsv = new Gson().fromJson(sortedStateCensusJson, CSVStateCensus[].class);
 			Assert.assertEquals("Andhra Pradesh", censusCsv[0].stateName);
 		} catch (CsvException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void givenIndianCensusDataWhenSortedOnStateCodeShouldReturnSortedResultWithCorrectLastState() {
 		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 		try {
-			String sortedStateCensusJson = stateCensusAnalyser.getSortedCensusData(RIGHT_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_CODE,SortOrder.ASCENDING);
-			CSVStateCensus[] censusCsv=new Gson().fromJson(sortedStateCensusJson, CSVStateCensus[].class);
-			Assert.assertEquals("West Bengal", censusCsv[censusCsv.length-1].stateName);
+			String sortedStateCensusJson = stateCensusAnalyser.getSortedCensusData(RIGHT_CENSUS_CSV,
+					CsvBuilderType.OPEN_CSV, SortByParameter.STATE_CODE, SortOrder.ASCENDING);
+			CSVStateCensus[] censusCsv = new Gson().fromJson(sortedStateCensusJson, CSVStateCensus[].class);
+			Assert.assertEquals("West Bengal", censusCsv[censusCsv.length - 1].stateName);
 		} catch (CsvException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void givenWrongIndiaCensusCsvWhenSortedOnStateCodeFileShouldThrowCensusAnalyserExceptionOfTypeCensusFileProblem() {
 		try {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.getSortedCensusData(WRONG_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_CODE,SortOrder.ASCENDING);
+			stateCensusAnalyser.getSortedCensusData(WRONG_CENSUS_CSV, CsvBuilderType.OPEN_CSV,
+					SortByParameter.STATE_CODE, SortOrder.ASCENDING);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.CENSUS_FILE_PROBLEM, e.exceptionType);
 		}
@@ -254,7 +265,8 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.getSortedCensusData(WRONGTYPE_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_CODE,SortOrder.ASCENDING);
+			stateCensusAnalyser.getSortedCensusData(WRONGTYPE_CENSUS_CSV, CsvBuilderType.OPEN_CSV,
+					SortByParameter.STATE_CODE, SortOrder.ASCENDING);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_TYPE, e.exceptionType);
 		}
@@ -266,7 +278,8 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.getSortedCensusData(WRONGDELIMITER_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_CODE,SortOrder.ASCENDING);
+			stateCensusAnalyser.getSortedCensusData(WRONGDELIMITER_CENSUS_CSV, CsvBuilderType.OPEN_CSV,
+					SortByParameter.STATE_CODE, SortOrder.ASCENDING);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_DELIMITER, e.exceptionType);
 		}
@@ -278,11 +291,10 @@ public class StateCensusAnalyserTest {
 			StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
 			ExpectedException exceptionRule = ExpectedException.none();
 			exceptionRule.expect(CsvException.class);
-			stateCensusAnalyser.getSortedCensusData(WRONGHEADER_CENSUS_CSV,CsvBuilderType.OPEN_CSV,SortByParameter.STATE_CODE,SortOrder.ASCENDING);
+			stateCensusAnalyser.getSortedCensusData(WRONGHEADER_CENSUS_CSV, CsvBuilderType.OPEN_CSV,
+					SortByParameter.STATE_CODE, SortOrder.ASCENDING);
 		} catch (CsvException e) {
 			Assert.assertEquals(CsvExceptionType.INCORRECT_HEADER, e.exceptionType);
 		}
 	}
 }
-
-	
