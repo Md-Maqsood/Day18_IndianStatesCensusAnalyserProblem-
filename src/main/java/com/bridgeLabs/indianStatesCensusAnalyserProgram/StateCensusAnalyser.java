@@ -34,15 +34,23 @@ public class StateCensusAnalyser {
 	public String getStateWiseSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
 		return getSortedCensusData(csvFilePath, csvBuilderType, SortByParameter.STATE_NAME, SortOrder.ASCENDING);
 	}
-	
-	public String getStateCodeWiseSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
+
+	public String getStateCodeWiseSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType)
+			throws CsvException {
 		return getSortedCensusData(csvFilePath, csvBuilderType, SortByParameter.STATE_CODE, SortOrder.ASCENDING);
 	}
-	
-	public String getCensusDataFromMostPopulousStateToLeast(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
+
+	public String getCensusDataFromMostPopulousStateToLeast(String csvFilePath, CsvBuilderType csvBuilderType)
+			throws CsvException {
 		return getSortedCensusData(csvFilePath, csvBuilderType, SortByParameter.POPULATION, SortOrder.DESCENDING);
 	}
-	
+
+	public String getCensusDataFromMostDenslyPopulatedStateToLeast(String csvFilePath, CsvBuilderType csvBuilderType)
+			throws CsvException {
+		return getSortedCensusData(csvFilePath, csvBuilderType, SortByParameter.POPULATION_DENSITY,
+				SortOrder.DESCENDING);
+	}
+
 	private String getSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType,
 			SortByParameter sortByParameter, SortOrder sortOrder) throws CsvException {
 		try {
@@ -57,8 +65,8 @@ public class StateCensusAnalyser {
 		}
 	}
 
-	private Function getKeyForComparison(CsvBuilderType csvBuilderType,
-			SortByParameter sortByParameter) throws CsvException {
+	private Function getKeyForComparison(CsvBuilderType csvBuilderType, SortByParameter sortByParameter)
+			throws CsvException {
 		switch (sortByParameter) {
 		case STATE_NAME: {
 			Function<CSVStateCensus, String> keyForComparison = censusState -> censusState.stateName;
@@ -80,8 +88,12 @@ public class StateCensusAnalyser {
 				throw new CsvException("Incorrect CSV File", CsvExceptionType.CENSUS_FILE_PROBLEM);
 			}
 		}
-		case POPULATION:{
+		case POPULATION: {
 			Function<CSVStateCensus, Long> keyForComparison = censusState -> censusState.population;
+			return keyForComparison;
+		}
+		case POPULATION_DENSITY: {
+			Function<CSVStateCensus, Integer> keyForComparison = censusState -> censusState.density;
 			return keyForComparison;
 		}
 		}
