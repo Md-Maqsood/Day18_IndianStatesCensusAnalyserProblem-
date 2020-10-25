@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.bridgeLabs.csvHandler.CsvBuilderFactory;
 import com.bridgeLabs.csvHandler.CsvException;
 import com.bridgeLabs.csvHandler.ICsvBuilder;
@@ -17,7 +20,9 @@ import com.google.gson.Gson;
 import com.bridgeLabs.csvHandler.CsvExceptionType;
 
 public class StateCensusAnalyser {
+	private static final Logger logger = LogManager.getLogger(StateCensusAnalyser.class);
 	public static final String RIGHT_STATE_CODES_CSV = "src/main/resources/India-State-Codes.csv";
+	public static final String RIGHT_CENSUS_CSV = "src/main/resources/India-Census-Data.csv";
 
 	public List<CSVStateCensus> loadStateCensusData(String csvFilePath, CsvBuilderType csvBuilderType)
 			throws CsvException {
@@ -49,6 +54,11 @@ public class StateCensusAnalyser {
 			throws CsvException {
 		return getSortedCensusData(csvFilePath, csvBuilderType, SortByParameter.POPULATION_DENSITY,
 				SortOrder.DESCENDING);
+	}
+
+	public String getCensusDataLargestStateToSmallestByArea(String csvFilePath, CsvBuilderType csvBuilderType)
+			throws CsvException {
+		return getSortedCensusData(csvFilePath, csvBuilderType, SortByParameter.STATE_AREA, SortOrder.DESCENDING);
 	}
 
 	private String getSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType,
@@ -96,6 +106,10 @@ public class StateCensusAnalyser {
 			Function<CSVStateCensus, Integer> keyForComparison = censusState -> censusState.density;
 			return keyForComparison;
 		}
+		case STATE_AREA: {
+			Function<CSVStateCensus, Integer> keyForComparison = censusState -> censusState.area;
+			return keyForComparison;
+		}
 		}
 		return null;
 	}
@@ -131,5 +145,39 @@ public class StateCensusAnalyser {
 		Iterable<T> csvIterable = () -> csvIterator;
 		int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
 		return numOfEntries;
+	}
+
+	public static void main(String[] args) {
+		StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+		try {
+			CSVStateCensus[] censusCsvStateName = new Gson().fromJson(
+					stateCensusAnalyser.getStateWiseSortedCensusData(RIGHT_CENSUS_CSV, CsvBuilderType.OPEN_CSV),
+					CSVStateCensus[].class);
+			CSVStateCensus[] censusCsvStateCode = new Gson().fromJson(
+					stateCensusAnalyser.getStateCodeWiseSortedCensusData(RIGHT_CENSUS_CSV, CsvBuilderType.OPEN_CSV),
+					CSVStateCensus[].class);
+			CSVStateCensus[] censusCsvStatePopulation = new Gson().fromJson(stateCensusAnalyser
+					.getCensusDataFromMostPopulousStateToLeast(RIGHT_CENSUS_CSV, CsvBuilderType.OPEN_CSV),
+					CSVStateCensus[].class);
+			CSVStateCensus[] censusCsvStateDensity = new Gson().fromJson(stateCensusAnalyser
+					.getCensusDataFromMostDenslyPopulatedStateToLeast(RIGHT_CENSUS_CSV, CsvBuilderType.OPEN_CSV),
+					CSVStateCensus[].class);
+			CSVStateCensus[] censusCsvStateArea = new Gson().fromJson(stateCensusAnalyser
+					.getCensusDataLargestStateToSmallestByArea(RIGHT_CENSUS_CSV, CsvBuilderType.OPEN_CSV),
+					CSVStateCensus[].class);
+			logger.info("Sort_Criteria    State_On_Top    State_On_Bottom");
+			logger.info("State_Name  " + censusCsvStateName[0].stateName + "  "
+					+ censusCsvStateName[censusCsvStateName.length - 1].stateName);
+			logger.info("State_Code  " + censusCsvStateCode[0].stateName + "  "
+					+ censusCsvStateCode[censusCsvStateCode.length - 1].stateName);
+			logger.info("Population  " + censusCsvStatePopulation[0].stateName + "  "
+					+ censusCsvStatePopulation[censusCsvStatePopulation.length - 1].stateName);
+			logger.info("Pop_Density  " + censusCsvStateDensity[0].stateName + "  "
+					+ censusCsvStateDensity[censusCsvStateDensity.length - 1].stateName);
+			logger.info("State_Area  " + censusCsvStateArea[0].stateName + "  "
+					+ censusCsvStateArea[censusCsvStateArea.length - 1].stateName);
+		} catch (CsvException e) {
+			logger.info(e.getMessage());
+		}
 	}
 }
