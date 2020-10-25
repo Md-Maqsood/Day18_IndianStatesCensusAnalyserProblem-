@@ -17,6 +17,9 @@ import com.google.gson.Gson;
 import com.bridgeLabs.csvHandler.CsvExceptionType;
 
 public class StateCensusAnalyser {
+	public static final String RIGHT_CENSUS_CSV = "src/main/resources/India-Census-Data.csv";
+	public static final String RIGHT_STATE_CODES_CSV = "src/main/resources/India-State-Codes.csv";
+
 	public int loadStateCensusData(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
 			ICsvBuilder csvBuilder = csvBuilderType == CsvBuilderType.OPEN_CSV ? CsvBuilderFactory.createBuilderOpen()
@@ -28,27 +31,59 @@ public class StateCensusAnalyser {
 		}
 	}
 
-	public String getStateWiseSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType) throws CsvException {
+	public String getSortedCensusData(String csvFilePath, CsvBuilderType csvBuilderType, SortByParameter sortByParameter, SortOrder sortOrder) throws CsvException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
 			ICsvBuilder csvBuilder = csvBuilderType == CsvBuilderType.OPEN_CSV ? CsvBuilderFactory.createBuilderOpen()
 					: CsvBuilderFactory.createBuilderCommons();
 			List<CSVStateCensus> censusCsvList = csvBuilder.getListFromCsv(reader, CSVStateCensus.class);
-			Function<CSVStateCensus, String> keyForComparison=census->census.stateName;
+			Function keyForComparison=getKeyForComparison(csvFilePath, csvBuilderType, sortByParameter);
 			Comparator<CSVStateCensus> censusComparator=Comparator.comparing(keyForComparison);
-			this.sort(censusCsvList, censusComparator);
+			this.sort(censusCsvList, censusComparator, sortOrder);
 			String sortedStateCensusJson=new Gson().toJson(censusCsvList);
 			return sortedStateCensusJson;
-		} catch (IOException e) {
+		}catch(NullPointerException e) {
+			throw new CsvException("Incorrect CSV File", CsvExceptionType.CENSUS_FILE_PROBLEM);
+		}catch (IOException e) {		
 			throw new CsvException("Incorrect CSV File", CsvExceptionType.CENSUS_FILE_PROBLEM);
 		}
 	}
 	
-	private void sort(List<CSVStateCensus> censusCsvList, Comparator<CSVStateCensus> censusComparator) {
+	private  Function getKeyForComparison(String csvFilePath, CsvBuilderType csvBuilderType, SortByParameter sortByParameter) throws IOException, CsvException{
+		switch(sortByParameter) {
+		case STATE_NAME:{
+			Function<CSVStateCensus, String> keyForComparison=censusState->censusState.stateName;
+			return keyForComparison;
+		}
+		case STATE_CODE:{
+			try (Reader reader = Files.newBufferedReader(Paths.get(RIGHT_STATE_CODES_CSV));) {
+				ICsvBuilder csvBuilder =  csvBuilderType == CsvBuilderType.OPEN_CSV ? CsvBuilderFactory.createBuilderOpen()
+						: CsvBuilderFactory.createBuilderCommons();
+				List<CSVStates> codesCsvList = csvBuilder.getListFromCsv(reader, CSVStates.class);
+				Function<CSVStateCensus, String> keyForComparison=censusState->{
+					for(CSVStates codesState: codesCsvList) {
+						if(codesState.stateName.equalsIgnoreCase(censusState.stateName)) {
+							return codesState.stateCode;
+						}
+					}
+					return null;
+				};
+				return keyForComparison;
+			}catch(NullPointerException e) {
+				throw new CsvException("Incorrect CSV File", CsvExceptionType.CENSUS_FILE_PROBLEM);
+			}
+		}
+		}
+		return null;
+	}
+	
+	private void sort(List<CSVStateCensus> censusCsvList, Comparator<CSVStateCensus> censusComparator, SortOrder sortOrder) {
 		for(int i=0;i<censusCsvList.size()-1;i++) {
 			for(int j=0; j<censusCsvList.size()-i-1;j++) {
 				CSVStateCensus census1=censusCsvList.get(j);
 				CSVStateCensus census2=censusCsvList.get(j+1);
-				if(censusComparator.compare(census1, census2)>0) {
+				int comarisonValue=sortOrder==SortOrder.ASCENDING?censusComparator.compare(census1, census2)
+						:censusComparator.compare(census2, census1);
+				if(comarisonValue>0) {
 					censusCsvList.set(j, census2);
 					censusCsvList.set(j+1, census1);
 				}
