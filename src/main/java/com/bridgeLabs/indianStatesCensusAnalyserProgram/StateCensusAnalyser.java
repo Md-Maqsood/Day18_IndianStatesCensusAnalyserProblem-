@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.bridgeLabs.csvHandler.CsvExceptionType;
 
 public class StateCensusAnalyser {
-	public static final String RIGHT_CENSUS_CSV = "src/main/resources/India-Census-Data.csv";
 	public static final String RIGHT_STATE_CODES_CSV = "src/main/resources/India-State-Codes.csv";
 
 	public List<CSVStateCensus> loadStateCensusData(String csvFilePath, CsvBuilderType csvBuilderType)
